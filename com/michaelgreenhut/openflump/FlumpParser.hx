@@ -117,6 +117,7 @@ class FlumpParser
 					{
 						ref = keyframe.att.ref;
 					}
+					//fix by gigbig@libero.it
 					loc = keyframe.has.loc ? textToPoint(keyframe.att.loc) : new Point(0, 0);
 					
 					if (keyframe.has.tweened)
