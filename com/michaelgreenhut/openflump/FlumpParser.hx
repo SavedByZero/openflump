@@ -117,16 +117,14 @@ class FlumpParser
 					{
 						ref = keyframe.att.ref;
 					}
-					if (keyframe.has.loc)
+					loc = keyframe.has.loc ? textToPoint(keyframe.att.loc) : new Point(0, 0);
+					
+					if (keyframe.has.tweened)
 					{
-						loc = textToPoint(keyframe.att.loc);
-						if (keyframe.has.tweened)
-						{
-							tweened = (keyframe.att.tweened == "false" ? false : true);
-						}
-						else
-							tweened = true;
+						tweened = keyframe.att.tweened == "false" ? false : true;
 					}
+					else
+						tweened = true;
 					if (keyframe.has.scale)
 					{
 						scale = textToPoint(keyframe.att.scale);
