@@ -111,7 +111,12 @@ class Layer
 			}
 			else 
 			{
-				_image = FlumpParser.get().getMovieByName(_currentTexture);
+				 //it must be a flump movie  or flipbook, and we don't need to call setImage at all.
+                if (_image != FlumpParser.get().getMovieByName(_currentTexture))
+                    _image = FlumpParser.get().getMovieByName(_currentTexture);
+
+                if (!cast(_image, FlumpMovie).nextFrame())
+                    cast(_image, FlumpMovie).gotoStart();  //this loops the internal flipbook
 			}
 			
 			if (_image != null)
@@ -149,8 +154,11 @@ class Layer
 				
 				_image.x = _currentLocation.x;
 				_image.y = _currentLocation.y;
-				_image.getChildAt(0).x = -_currentPivot.x;
-				_image.getChildAt(0).y = -_currentPivot.y;
+				if (_image.numChildren > 0)
+				{
+					_image.getChildAt(0).x = -_currentPivot.x;
+					_image.getChildAt(0).y = -_currentPivot.y;
+				}
 				
 				//if (_currentSkew.x != 0 || _currentSkew.y != 0)
 				{

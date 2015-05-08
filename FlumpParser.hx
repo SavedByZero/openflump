@@ -153,7 +153,7 @@ class FlumpParser
 				}
 				fm.addLayer(movieLayer);
 			}
-			fm.process();
+			//fm.process();
 			_movies.push(fm);
 		}
 		trace("made movies", _movies);
