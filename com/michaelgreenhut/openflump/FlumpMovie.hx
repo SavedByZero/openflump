@@ -8,6 +8,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.geom.Transform;
 import flash.Lib;
+import openfl.display.DisplayObjectContainer;
 
 /**
  * ...
@@ -25,6 +26,24 @@ class FlumpMovie extends Sprite
 	{
 		super();
 		_layers = new Array<Layer>();
+	}
+	
+	public override function toString():String 
+	{
+		var returnString:String = "[";
+		for (i in 0..._layers.length)
+		{
+			if (_layers[i].getImage() == null)
+				returnString += "null";
+			else
+			{
+				for (j in 0..._layers[i].getLength())
+					returnString += ("image: " + _layers[i].hasImageNamed());
+			}
+		}
+		returnString += "]";
+		
+		return returnString;
 	}
 	
 	public function addLayer(layer:Layer):Void
@@ -81,7 +100,7 @@ class FlumpMovie extends Sprite
 	{
 		if (layer.getImage() != null)
 		{
-			var image:Sprite = layer.getImage();
+			var image:DisplayObjectContainer = layer.getImage();
 			if (layer.isShown())
 			{
 				addChild(image);

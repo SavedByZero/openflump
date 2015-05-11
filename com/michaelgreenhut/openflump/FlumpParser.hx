@@ -153,10 +153,10 @@ class FlumpParser
 				}
 				fm.addLayer(movieLayer);
 			}
-			fm.process();
+			//fm.process();
 			_movies.push(fm);
 		}
-		trace("made movies");
+		trace("made movies", _movies);
 	}
 	
 	public function getMovieByName(name:String):FlumpMovie
@@ -166,7 +166,8 @@ class FlumpParser
 			if (_movies[i].name == name)
 			{
 				var movieToReturn:FlumpMovie = _movies[i];
-				_movies.splice(i, 1);
+				//_movies.splice(i, 1);
+				//trace("returning movie ", name, movieToReturn);
 				return movieToReturn;
 			}
 		}

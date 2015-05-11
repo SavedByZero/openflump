@@ -1,7 +1,8 @@
 package com.michaelgreenhut.openflump ;
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.display.Sprite;
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
+import openfl.display.Sprite;
+import openfl.display.DisplayObjectContainer;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Transform;
@@ -23,7 +24,7 @@ class Layer
 	private var _currentPivot:Point;
 	private var _currentSkew:Point;
 	private var _currentAlpha:Float = 1;
-	private var _image:Sprite;
+	private var _image:DisplayObjectContainer;
 	private var _length:Int = 0;
 	
 	public var name:String;
@@ -102,8 +103,21 @@ class Layer
 			populateCurrentValues(_index);
 			
 			var textureSprite:Sprite = FlumpTextures.get().getTextureByName(_currentTexture);
-			var originalbm:Bitmap = cast(textureSprite.getChildAt(0), Bitmap);
-			setImage(originalbm.bitmapData.clone());
+			
+			if (textureSprite != null)
+			{
+				var originalbm:Bitmap = cast(textureSprite.getChildAt(0), Bitmap);
+				setImage(originalbm.bitmapData.clone());
+			}
+			else 
+			{
+				 //it must be a flump movie  or flipbook, and we don't need to call setImage at all.
+                if (_image != FlumpParser.get().getMovieByName(_currentTexture))
+                    _image = FlumpParser.get().getMovieByName(_currentTexture);
+
+                if (!cast(_image, FlumpMovie).nextFrame())
+                    cast(_image, FlumpMovie).gotoStart();  //this loops the internal flipbook
+			}
 			
 			if (_image != null)
 			{
@@ -140,8 +154,11 @@ class Layer
 				
 				_image.x = _currentLocation.x;
 				_image.y = _currentLocation.y;
-				_image.getChildAt(0).x = -_currentPivot.x;
-				_image.getChildAt(0).y = -_currentPivot.y;
+				if (_image.numChildren > 0)
+				{
+					_image.getChildAt(0).x = -_currentPivot.x;
+					_image.getChildAt(0).y = -_currentPivot.y;
+				}
 				
 				//if (_currentSkew.x != 0 || _currentSkew.y != 0)
 				{
@@ -205,7 +222,7 @@ class Layer
 		_image = mv;
 	}
 	
-	public function getImage():Sprite
+	public function getImage():DisplayObjectContainer
 	{
 		return _image;
 	}
