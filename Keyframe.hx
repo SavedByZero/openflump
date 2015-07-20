@@ -38,6 +38,11 @@ class Keyframe
 			_skew = skew;
 	}
 	
+	public function clone():Keyframe
+	{
+		return new Keyframe(_duration,_ref,_location,_scale,_pivot,_tweened,_ease,_alpha,_skew);
+	}
+	
 	public function back():Bool 
 	{
 		if (_index > 0)

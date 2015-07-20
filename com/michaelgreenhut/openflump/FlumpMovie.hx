@@ -21,11 +21,25 @@ class FlumpMovie extends Sprite
 	private var _callback:Void->Void;
 	private var _internalX:Float;
 	private var _internalY:Float;
+	public var key:Int;
+	private static var count:Int = 0;
 
 	public function new() 
 	{
 		super();
+		key = Std.random(99999);
 		_layers = new Array<Layer>();
+	}
+	
+	public function clone():FlumpMovie
+	{
+		var fm:FlumpMovie = new FlumpMovie();
+		for (i in 0..._layers.length)
+		{
+			fm.addLayer(_layers[i].clone());
+		}
+		
+		return fm;
 	}
 	
 	public override function toString():String 
@@ -104,6 +118,8 @@ class FlumpMovie extends Sprite
 			if (layer.isShown())
 			{
 				addChild(image);
+				count++;
+				trace(_internalX, _internalY, image.name, key, count);
 			}
 			else 
 			{
@@ -114,6 +130,7 @@ class FlumpMovie extends Sprite
 			}
 			_internalX = image.x;
 			_internalY = image.y;
+			
 		}
 	}
 	

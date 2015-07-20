@@ -112,8 +112,8 @@ class Layer
 			else 
 			{
 				 //it must be a flump movie  or flipbook, and we don't need to call setImage at all.
-                if (_image != FlumpParser.get().getMovieByName(_currentTexture))
-                    _image = FlumpParser.get().getMovieByName(_currentTexture);
+                if (Type.getClass(_image) != FlumpMovie)
+                    _image = FlumpParser.get().getMovieByName(_currentTexture).clone();
 
                 if (!cast(_image, FlumpMovie).nextFrame())
                     cast(_image, FlumpMovie).gotoStart();  //this loops the internal flipbook
@@ -271,6 +271,16 @@ class Layer
 			//count++;
 			
 		}
+	}
+	
+	public function clone():Layer
+	{
+		var layer:Layer = new Layer();
+		for (i in 0..._keyframes.length)
+		{
+			layer.addKeyframe(_keyframes[i].clone());
+		}
+		return layer;
 	}
 	
 	public function getFrame():Int 

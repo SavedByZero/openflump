@@ -28,6 +28,18 @@ class FlumpMovie extends Sprite
 		_layers = new Array<Layer>();
 	}
 	
+	
+	public function clone():FlumpMovie
+	{
+		var fm:FlumpMovie = new FlumpMovie();
+		for (i in 0..._layers.length)
+		{
+			fm.addLayer(_layers[i].clone());
+		}
+		
+		return fm;
+	}
+	
 	public override function toString():String 
 	{
 		var returnString:String = "[";
@@ -68,6 +80,7 @@ class FlumpMovie extends Sprite
 	
 	public function process():Void 
 	{
+		trace("num layers", _layers.length, this.name);
 		for (i in 0..._layers.length)
 		{
 			_layers[i].process();
@@ -114,7 +127,10 @@ class FlumpMovie extends Sprite
 			}
 			_internalX = image.x;
 			_internalY = image.y;
+			
 		}
+		
+		trace("internal Y", _internalY, this.name);
 	}
 	
 	public function play(callb:Void->Void = null):Void

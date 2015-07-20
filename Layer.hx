@@ -1,6 +1,7 @@
 package com.michaelgreenhut.openflump ;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display.DisplayObject;
 import openfl.display.Sprite;
 import openfl.display.DisplayObjectContainer;
 import flash.geom.Matrix;
@@ -33,11 +34,11 @@ class Layer
 	private var _destinationIndex:Int;
 	private var _preTweenIndex:Int = 0;
 	private var _originalMatrix:Matrix;
-	public function new() 
+	public function new(image:DisplayObjectContainer = null) 
 	{
 		_keyframes = new Array<Keyframe>();
 		_preTweenIndex = _index;
-		_image = new Sprite();
+		_image = (image == null ? new Sprite() : image);
 	}
 	
 	public function addKeyframe(kf:Keyframe):Void
@@ -112,8 +113,8 @@ class Layer
 			else 
 			{
 				 //it must be a flump movie  or flipbook, and we don't need to call setImage at all.
-                if (_image != FlumpParser.get().getMovieByName(_currentTexture))
-                    _image = FlumpParser.get().getMovieByName(_currentTexture);
+                if (_image == null)
+                    _image = FlumpParser.get().getMovieByName(_currentTexture).clone();
 
                 if (!cast(_image, FlumpMovie).nextFrame())
                     cast(_image, FlumpMovie).gotoStart();  //this loops the internal flipbook
@@ -271,6 +272,18 @@ class Layer
 			//count++;
 			
 		}
+	}
+	
+	public function clone():Layer
+	{
+		var layer:Layer = new Layer();
+		var bd:BitmapData = new BitmapData(_image.width, _image.height, true, 0xffffff);
+		
+		for (i in 0..._keyframes.length)
+		{
+			layer.addKeyframe(_keyframes[i].clone());
+		}
+		return layer;
 	}
 	
 	public function getFrame():Int 
