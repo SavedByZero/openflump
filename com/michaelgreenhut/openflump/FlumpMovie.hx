@@ -31,6 +31,11 @@ class FlumpMovie extends Sprite
 		_layers = new Array<Layer>();
 	}
 	
+	public function layers():Array<Layer>
+	{
+		return _layers;
+	}
+	
 	public function clone():FlumpMovie
 	{
 		var fm:FlumpMovie = new FlumpMovie();

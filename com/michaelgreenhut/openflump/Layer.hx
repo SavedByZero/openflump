@@ -48,6 +48,11 @@ class Layer
 			_containsImage = kf.getRef();
 	}
 	
+	public function keyFrames():Array<Keyframe>
+	{
+		return _keyframes;
+	}
+	
 	public function back():Bool 
 	{    
 		if (_index >= 0)
